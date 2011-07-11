@@ -70,6 +70,11 @@ var wb = new Ext.Application({
                             listeners: {tap: function () {
                                 wb.cards.setActiveItem('regionCard', {type:'slide', direction:'right'});
                             }}
+                        }, {xtype:'spacer'}, {
+                            text: 'Home',
+                            listeners: {tap: function () {
+                                wb.cards.setActiveItem('regionsCard', {type:'slide', direction:'right'});
+                            }}
                         }]
                     }))],
                     layout: {type: 'vbox', align:'stretch'},
@@ -101,6 +106,11 @@ var wb = new Ext.Application({
                             text: 'Country',
                             listeners: {tap: function () {
                                 wb.cards.setActiveItem('countryCard', {type:'slide', direction:'right'});
+                            }}
+                        }, {xtype:'spacer'}, {
+                            text: 'Home',
+                            listeners: {tap: function () {
+                                wb.cards.setActiveItem('regionsCard', {type:'slide', direction:'right'});
                             }}
                         }]
                     }))],
@@ -182,7 +192,7 @@ var wb = new Ext.Application({
                                 style: {
                                     'stroke-width': 3,
                                     'fill': '#e5cfd1',
-                                    'stroke': '#991924',
+                                    'stroke': '#991924'
                                 }
                             }]
                         })),
@@ -190,7 +200,7 @@ var wb = new Ext.Application({
                             title: 'Data',
                             layout: 'fit',
                             store: null,
-                            itemTpl: '{[values.date.getFullYear()]}: {value}'
+                            itemTpl: '<span style="font-weight:bold; width:50%; display:inline-block; padding-right:10px">{[values.date.getFullYear()]}</span>{value}'
                         }))
                     ],
                     updateWithIndicatorAndCountry: function(indicator, country) {
