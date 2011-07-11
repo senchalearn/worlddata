@@ -159,14 +159,7 @@ var wb = new Ext.Application({
                             interactions: [],
                             axes: [{
                                 type: 'Numeric',
-                                grid: {
-                                    odd: {
-                                        opacity: 1,
-                                        fill: '#ddd',
-                                        stroke: '#bbb',
-                                        'stroke-width': 0.5
-                                    }
-                                },
+                                grid: true,
                                 position: 'left',
                                 fields: ['value'],
                                 title: 'Value'
@@ -187,7 +180,9 @@ var wb = new Ext.Application({
                                 xField: 'date',
                                 yField: 'value',
                                 style: {
-                                    'stroke-width': 1
+                                    'stroke-width': 3,
+                                    'fill': '#e5cfd1',
+                                    'stroke': '#991924',
                                 }
                             }]
                         })),
@@ -195,7 +190,7 @@ var wb = new Ext.Application({
                             title: 'Data',
                             layout: 'fit',
                             store: null,
-                            itemTpl: '{date}: {value}'
+                            itemTpl: '{[values.date.getFullYear()]}: {value}'
                         }))
                     ],
                     updateWithIndicatorAndCountry: function(indicator, country) {
@@ -206,8 +201,8 @@ var wb = new Ext.Application({
                         wb.indicatorCardChart.bindStore(store);
                         wb.indicatorCardTable.bindStore(store);
                         
-                        wb.data.recentCountries.add(country);
-                        wb.data.recentCountries.sync();
+                        //wb.data.recentCountries.add(country);
+                        //wb.data.recentCountries.sync();
                     }
                 }
             ] 

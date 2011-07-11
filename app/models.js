@@ -156,13 +156,13 @@ wb.data.Region = Ext.regModel("", {
 });
 
 
-wb.data.recentCountries = new Ext.data.Store({
-    model: wb.data.Country,
-    autoLoad: true,
-    proxy: {
-        type: 'memory'
-    }
-});
+//wb.data.recentCountries = new Ext.data.Store({
+//    model: wb.data.Country,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'memory'
+//    }
+//});
 
 
 wb.data.allRegions = new Ext.data.Store({
@@ -179,11 +179,11 @@ wb.data.allRegions = new Ext.data.Store({
     },
     listeners: {
         load: function () {
-            var recentCountriesRegion = new wb.data.Region({name:'Recently used countries'});
-            recentCountriesRegion.getCountries = function () {
-                return wb.data.recentCountries;
-            };
-            this.insert(0, recentCountriesRegion);
+            //var recentCountriesRegion = new wb.data.Region({name:'Recently used countries'});
+            //recentCountriesRegion.getCountries = function () {
+            //    return wb.data.recentCountries;
+            //};
+            //this.insert(0, recentCountriesRegion);
         }
     }
 });
