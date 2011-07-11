@@ -73,7 +73,7 @@ var wb = new Ext.Application({
                         }, {xtype:'spacer'}, {
                             text: 'Home',
                             listeners: {tap: function () {
-                                wb.cards.setActiveItem('regionsCard', {type:'slide', direction:'right'});
+                                wb.cards.setActiveItem('regionsCard', {type:'slide', direction:'right   '});
                             }}
                         }]
                     }))],
@@ -200,7 +200,8 @@ var wb = new Ext.Application({
                             title: 'Data',
                             layout: 'fit',
                             store: null,
-                            itemTpl: '<span style="font-weight:bold; width:50%; display:inline-block; padding-right:10px">{[values.date.getFullYear()]}</span>{value}'
+                            cls: 'grid',
+                            itemTpl: '<span class="date">{[values.date.getFullYear()]}</span><span class="value">{value}</span>'
                         }))
                     ],
                     updateWithIndicatorAndCountry: function(indicator, country) {

@@ -11,3 +11,13 @@ $include-default-icons: false;
 @include sencha-list;
 @include sencha-layout;
 @include sencha-loading-spinner;
+
+
+.grid {
+  .date {
+    font-weight:bold; width:50%; display:inline-block
+  }
+  .value {
+    font-family:monospace
+  }
+}
