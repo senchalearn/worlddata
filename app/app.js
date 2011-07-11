@@ -171,7 +171,8 @@ var wb = new Ext.Application({
                                 fields: ['value'],
                                 title: 'Value'
                             }, {
-                                type: 'Numeric',
+                                type: 'Time',
+                                dateFormat: 'Y',
                                 grid: true,
                                 position: 'bottom',
                                 fields: ['date'],

@@ -1,4 +1,4 @@
-wb.data = {}, //namespace for models & stores
+wb.data = {}; //namespace for models & stores
 
 //
 //wb.data.DataPoint = Ext.regModel("", {
@@ -17,16 +17,17 @@ wb.data.CountryIndicator = Ext.regModel("", {
         {name: "indicatorName", type: "string"},
         {name: "name", type: "string", convert: function(value, record) {
             return record.get('countryName') + ' ' + record.get('indicatorName');
-        }},
+        }}
     ],
     _data: null,
     getData: function () {
         if (!this._data) {
             this._data = new Ext.data.Store({
                 fields: [
-                    {name: "date", type: "int"},
-                    {name: "value", type: "float"},
+                    {name: "date", type: "date", dateFormat: "Y"},
+                    {name: "value", type: "float"}
                 ],
+                sorters: 'date',
                 autoLoad: true,
                 proxy: {    
                     type: 'scripttag',
@@ -112,7 +113,6 @@ wb.data.Country = Ext.regModel("", {
         var index = this._countryIndicators.findExact('indicatorId', indicator.get('id'));
         var countryIndicator = index != -1 ? this._countryIndicators.getAt(index) : null;
         if (!countryIndicator) {
-            console.log('made new countryIndicator');
             countryIndicator = new wb.data.CountryIndicator({
                 countryId: this.get('id'),
                 countryName: this.get('name'),
@@ -182,7 +182,7 @@ wb.data.allRegions = new Ext.data.Store({
             var recentCountriesRegion = new wb.data.Region({name:'Recently used countries'});
             recentCountriesRegion.getCountries = function () {
                 return wb.data.recentCountries;
-            }
+            };
             this.insert(0, recentCountriesRegion);
         }
     }
