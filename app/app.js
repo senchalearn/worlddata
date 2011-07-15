@@ -156,17 +156,22 @@ var wb = new Ext.Application({
                         (wb.indicatorCardChart = new Ext.chart.Chart({
                             title: 'Chart',
                             store: null,
-                            interactions: [],
+                            theme: 'Fancy',
+                            interactions: [{
+                                type: 'reset'
+                            }, {
+                                type: 'axisnavigation'
+                            }],
                             axes: [{
                                 type: 'Numeric',
-                                grid: {
-                                    odd: {
-                                        opacity: 1,
-                                        fill: '#ddd',
-                                        stroke: '#bbb',
-                                        'stroke-width': 0.5
-                                    }
-                                },
+                                // grid: {
+                                //     odd: {
+                                //         opacity: 1,
+                                //         fill: '#ddd',
+                                //         stroke: '#bbb',
+                                //         'stroke-width': 0.5
+                                //     }
+                                // },
                                 position: 'left',
                                 fields: ['value'],
                                 title: 'Value'
@@ -181,14 +186,14 @@ var wb = new Ext.Application({
                             series: [{
                                 type: 'line',
                                 lineWidth: 1,
-                                showMarkers: false,
+                                // showMarkers: false,
                                 fill: true,
                                 axis: 'left',
                                 xField: 'date',
-                                yField: 'value',
-                                style: {
-                                    'stroke-width': 1
-                                }
+                                yField: 'value'
+                                // style: {
+                                //     'stroke-width': 1
+                                // }
                             }]
                         })),
                         (wb.indicatorCardTable = new Ext.List({
