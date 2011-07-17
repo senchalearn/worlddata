@@ -1,0 +1,29 @@
+// Base Sencha Touch stylesheets
+
+$base-color: #5d6056;
+$active-color: #8c0000;
+
+$list-bg-color: #f3f4f0;
+
+@import 'sencha-touch/default/all';
+
+@include sencha-panel;
+@include sencha-buttons;
+/*@include sencha-sheet;*/
+/*@include sencha-picker;*/
+@include sencha-tabs;
+@include sencha-toolbar;
+@include sencha-toolbar-forms;
+/*@include sencha-carousel;*/
+/*@include sencha-indexbar;*/
+@include sencha-list;
+/*@include sencha-list-paging;*/
+/*@include sencha-list-pullrefresh;*/
+@include sencha-layout;
+@include sencha-form;
+@include sencha-msgbox;
+@include sencha-loading-spinner;
+
+// @import Touch charts
+
+@import 'touch-charts/default/all';

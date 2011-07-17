@@ -14,6 +14,7 @@ var wb = new Ext.Application({
                 wb.views.topic.card,
                 wb.views.data.card,
             ]
+
         });
 
         wb.views.regions.list.bindStore(wb.models.allRegions);
