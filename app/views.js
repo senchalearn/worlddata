@@ -14,6 +14,8 @@ wb.views.home.card = new Ext.Panel({
             text: 'Data by region',
             listeners: {
                 tap: function () {
+                    wb.views.regions.list.selModel.deselectAll();
+                    wb.views.topics.list.selModel.deselectAll();
                     wb.views.cards.setActiveItem('regionsCard');
                 }
             }
@@ -22,7 +24,9 @@ wb.views.home.card = new Ext.Panel({
             text: 'Data by indicator',
             listeners: {
                 tap: function () {
-                    Ext.Msg.alert("Coming soon");
+                    wb.views.regions.list.selModel.deselectAll();
+                    wb.views.topics.list.selModel.deselectAll();
+                    wb.views.cards.setActiveItem('topicsCard');
                 }
             }
         }, {
@@ -306,9 +310,8 @@ wb.views.data.card = new Ext.TabPanel({
         var store = countryIndicator.getData();
         wb.views.data.chart.bindStore(store);
         wb.views.data.table.bindStore(store);
-        
+
         //wb.models.recentCountries.add(country);
         //wb.models.recentCountries.sync();
     }
 });
-
