@@ -212,10 +212,15 @@ wb.models.allTopics = new Ext.data.Store({
     }
 });
 
-wb.models.interestingCountryIndicators = new Ext.data.Store({
+wb.models.curatedCountryIndicators = new Ext.data.Store({
     model: wb.models.CountryIndicator,
     data: [
+        {alias:"US Energy Usage", countryId:"USA", indicatorId:"EG.USE.COMM.KT.OE"},
+        {alias:"Korean Tech Exports", countryId:"KOR", indicatorId:"TX.VAL.TECH.CD"},
+        {alias:"Chinese Rail Usage", countryId:"CHN", indicatorId:"IS.RRS.PASG.KM"},
         {alias:"Greek Debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"},
+        {alias:"Urban Growth in India", countryId:"IND", indicatorId:"SP.URB.TOTL.IN.ZS"},
         {alias:"Ukrainian Tractors", countryId:"UKR", indicatorId:"AG.AGR.TRAC.NO"},
+
     ]
 });

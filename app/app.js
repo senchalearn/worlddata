@@ -20,7 +20,7 @@ var wb = new Ext.Application({
         wb.views.regions.list.bindStore(wb.models.allRegions);
         wb.views.topics.list.bindStore(wb.models.allTopics);
 
-        wb.views.interesting.list.bindStore(wb.models.interestingCountryIndicators);
+        wb.views.curated.list.bindStore(wb.models.curatedCountryIndicators);
 
     }
 

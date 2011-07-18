@@ -11,6 +11,17 @@ wb.views.home.card = new Ext.Panel({
     items: [
         {
             xtype: 'button',
+            text: 'Curated datasets',
+            listeners: {
+                tap: function () {
+                    wb.resetSelections();
+                    wb.views.cards.setActiveItem(
+                        wb.views.curated.card
+                    );
+                }
+            }
+        }, {
+            xtype: 'button',
             text: 'Data by region',
             listeners: {
                 tap: function () {
@@ -28,17 +39,6 @@ wb.views.home.card = new Ext.Panel({
                     wb.resetSelections();
                     wb.views.cards.setActiveItem(
                         wb.views.topics.card.update(wb.views.home.card, 'Home')
-                    );
-                }
-            }
-        }, {
-            xtype: 'button',
-            text: 'Interesting data',
-            listeners: {
-                tap: function () {
-                    wb.resetSelections();
-                    wb.views.cards.setActiveItem(
-                        wb.views.interesting.card
                     );
                 }
             }
@@ -234,9 +234,9 @@ wb.views.topic.card = new Ext.Panel({
 });
 
 //----------------------
-wb.views.interesting = {};
-wb.views.interesting.toolbar = new Ext.Toolbar({
-    title: 'Interesting datasets',
+wb.views.curated = {};
+wb.views.curated.toolbar = new Ext.Toolbar({
+    title: 'Curated datasets',
     items: [{
         ui:'back',
         text: 'Home',
@@ -245,7 +245,7 @@ wb.views.interesting.toolbar = new Ext.Toolbar({
         }}
     }]
 });
-wb.views.interesting.list = new Ext.List({
+wb.views.curated.list = new Ext.List({
     store: null,
     itemTpl: '{alias}',
     listeners: {
@@ -254,16 +254,16 @@ wb.views.interesting.list = new Ext.List({
                 wb.currentCountryIndicator = records[0];
                 wb.views.cards.setActiveItem(
                     wb.views.data.card
-                ).getActiveItem().update(wb.views.interesting.card, 'Back');
+                ).getActiveItem().update(wb.views.curated.card, 'Back');
             }
         }
     }
 });
-wb.views.interesting.card = new Ext.Panel({
-    id: 'interestingCard',
+wb.views.curated.card = new Ext.Panel({
+    id: 'curatedCard',
     layout: 'fit',
-    dockedItems: [wb.views.interesting.toolbar],
-    items: [wb.views.interesting.list]
+    dockedItems: [wb.views.curated.toolbar],
+    items: [wb.views.curated.list]
 });
 
 //----------------------
@@ -377,7 +377,7 @@ wb.resetSelections = function() {
     wb.resetCountry();
     wb.resetIndicator();
     wb.currentCountryIndicator = null;
-    wb.views.interesting.list.selModel.deselectAll();
+    wb.views.curated.list.selModel.deselectAll();
 }
 wb.resetCountry = function() {
     wb.currentCountry = null;
