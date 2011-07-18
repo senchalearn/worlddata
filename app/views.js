@@ -14,9 +14,10 @@ wb.views.home.card = new Ext.Panel({
             text: 'Data by region',
             listeners: {
                 tap: function () {
-                    wb.views.regions.list.selModel.deselectAll();
-                    wb.views.topics.list.selModel.deselectAll();
-                    wb.views.cards.setActiveItem('regionsCard');
+                    wb.resetSelections();
+                    wb.views.cards.setActiveItem(
+                        wb.views.regions.card.update(wb.views.home.card, 'Home')
+                    );
                 }
             }
         }, {
@@ -24,9 +25,10 @@ wb.views.home.card = new Ext.Panel({
             text: 'Data by indicator',
             listeners: {
                 tap: function () {
-                    wb.views.regions.list.selModel.deselectAll();
-                    wb.views.topics.list.selModel.deselectAll();
-                    wb.views.cards.setActiveItem('topicsCard');
+                    wb.resetSelections();
+                    wb.views.cards.setActiveItem(
+                        wb.views.topics.card.update(wb.views.home.card, 'Home')
+                    );
                 }
             }
         }, {
@@ -61,15 +63,18 @@ wb.views.home.card = new Ext.Panel({
 //----------------------
 
 wb.views.regions = {};
+wb.views.regions.backButton = new Ext.Button({
+    ui:'back',
+    text: 'Home',
+    backTo: 'homeCard',
+    listeners: {tap: function () {
+        wb.resetCountry();
+        wb.views.cards.setActiveItem(this.backTo, {type:'slide', direction:'right'});
+    }}
+});
 wb.views.regions.toolbar = new Ext.Toolbar({
     title: "Regions",
-    items: [{
-        ui:'back',
-        text: 'Home',
-        listeners: {tap: function () {
-            wb.views.cards.setActiveItem('homeCard', {type:'slide', direction:'right'});
-        }}
-    }]
+    items: [wb.views.regions.backButton]
 });
 wb.views.regions.list = new Ext.List({
     store: null,
@@ -88,7 +93,11 @@ wb.views.regions.list = new Ext.List({
 wb.views.regions.card = new Ext.Panel({
     id: 'regionsCard',
     dockedItems: [wb.views.regions.toolbar],
-    items: [wb.views.regions.list]
+    items: [wb.views.regions.list],
+    update: function(backTo, text) {
+        wb.views.regions.backButton.setText(text).backTo = backTo;
+        return this;
+    }
 });
 
 //----------------------
@@ -101,11 +110,6 @@ wb.views.region.toolbar = new Ext.Toolbar({
         text: 'Regions',
         listeners: {tap: function () {
             wb.views.cards.setActiveItem('regionsCard', {type:'slide', direction:'right'});
-        }}
-    }, {xtype:'spacer'}, {
-        text: 'Home',
-        listeners: {tap: function () {
-            wb.views.cards.setActiveItem('homeCard', {type:'slide', direction:'right   '});
         }}
     }]
 });
@@ -122,11 +126,13 @@ wb.views.region.card = new Ext.Panel({
                     if (records[0]) {
                         wb.currentCountry = records[0];
                         if (!wb.currentIndicator) {
-                            wb.views.cards.setActiveItem('topicsCard')
+                            wb.views.cards.setActiveItem(
+                                wb.views.topics.card.update(wb.views.region.card, 'Region')
+                            );
                         } else {
-                            wb.views.cards
-                                .setActiveItem('dataCard')
-                                .getActiveItem().update(records[0]);
+                            wb.views.cards.setActiveItem(
+                                wb.views.data.card.update(wb.views.region.card, 'Region')
+                            );
                         }
                     }
                 }
@@ -142,20 +148,18 @@ wb.views.region.card = new Ext.Panel({
 //----------------------
 
 wb.views.topics = {};
+wb.views.topics.backButton = new Ext.Button({
+    ui:'back',
+    text: 'Home',
+    backTo: 'homeCard',
+    listeners: {tap: function () {
+        wb.resetIndicator();
+        wb.views.cards.setActiveItem(this.backTo, {type:'slide', direction:'right'});
+    }}
+});
 wb.views.topics.toolbar = new Ext.Toolbar({
     title: "Topics",
-    items: [{
-        ui:'back',
-        text: 'Region',
-        listeners: {tap: function () {
-            wb.views.cards.setActiveItem('regionCard', {type:'slide', direction:'right'});
-        }}
-    }, {xtype:'spacer'}, {
-        text: 'Home',
-        listeners: {tap: function () {
-            wb.views.cards.setActiveItem('homeCard', {type:'slide', direction:'right'});
-        }}
-    }]
+    items: [wb.views.topics.backButton]
 });
 wb.views.topics.list = new Ext.List({
     store: null,
@@ -174,7 +178,11 @@ wb.views.topics.card = new Ext.Panel({
     id: 'topicsCard',
     layout: 'fit',
     dockedItems: [wb.views.topics.toolbar],
-    items: [wb.views.topics.list]
+    items: [wb.views.topics.list],
+    update: function(backTo, text) {
+        wb.views.topics.backButton.setText(text).backTo = backTo;
+        return this;
+    }
 });
 
 //----------------------
@@ -186,12 +194,7 @@ wb.views.topic.toolbar = new Ext.Toolbar({
         ui:'back',
         text: 'Topics',
         listeners: {tap: function () {
-            wb.views.cards.setActiveItem('regionCard', {type:'slide', direction:'right'});
-        }}
-    }, {xtype:'spacer'}, {
-        text: 'Home',
-        listeners: {tap: function () {
-            wb.views.cards.setActiveItem('homeCard', {type:'slide', direction:'right'});
+            wb.views.cards.setActiveItem('topicsCard', {type:'slide', direction:'right'});
         }}
     }]
 });
@@ -203,11 +206,13 @@ wb.views.topic.list = new Ext.List({
             if (records[0]) {
                 wb.currentIndicator = records[0];
                 if (!wb.currentCountry) {
-                    wb.views.cards.setActiveItem('regionsCard')
+                    wb.views.cards.setActiveItem(
+                        wb.views.regions.card.update(wb.views.topic.card, 'Topic')
+                    );
                 } else {
-                    wb.views.cards
-                        .setActiveItem('dataCard')
-                        .getActiveItem().update();
+                    wb.views.cards.setActiveItem(
+                        wb.views.data.card.update(wb.views.topic.card, 'Topic')
+                    );
                 }
             }
         }
@@ -227,6 +232,15 @@ wb.views.topic.card = new Ext.Panel({
 //----------------------
 
 wb.views.data = {};
+wb.views.data.backButton = new Ext.Button({
+    ui:'back',
+    text: 'Home',
+    backTo: 'homeCard',
+    listeners: {tap: function () {
+        wb.views.cards.setActiveItem(this.backTo, {type:'slide', direction:'right'});
+    }}
+});
+
 wb.views.data.study = new Ext.Button({
     text: 'Add to workbench',
     listeners: {tap: function () {
@@ -237,13 +251,7 @@ wb.views.data.study = new Ext.Button({
 wb.views.data.toolbar = new Ext.Toolbar({
     title: 'Indicator',
     items: [
-        {
-            ui: 'back',
-            text: 'Topic',
-            listeners: {tap: function () {
-                wb.views.cards.setActiveItem('topicCard', {type:'slide', direction:'right'});
-            }}
-        },
+        wb.views.data.backButton,
         {xtype:'spacer'},
         wb.views.data.study
     ]
@@ -303,7 +311,9 @@ wb.views.data.card = new Ext.TabPanel({
         wb.views.data.chart,
         wb.views.data.table
     ],
-    update: function() {
+    update: function(backTo, text) {
+        wb.views.data.backButton.setText(text).backTo = backTo;
+
         var countryIndicator = wb.currentCountry.getCountryIndicator(wb.currentIndicator);
         wb.views.data.toolbar.setTitle(countryIndicator.get('name'));
         wb.views.data.study.countryIndicator = countryIndicator;
@@ -313,5 +323,23 @@ wb.views.data.card = new Ext.TabPanel({
 
         //wb.models.recentCountries.add(country);
         //wb.models.recentCountries.sync();
+
+        return this;
     }
+
 });
+
+wb.resetSelections = function() {
+    wb.resetCountry();
+    wb.resetIndicator();
+}
+wb.resetCountry = function() {
+    wb.currentCountry = null;
+    wb.views.regions.list.selModel.deselectAll();
+    wb.views.region.list.selModel.deselectAll();
+}
+wb.resetIndicator = function() {
+    wb.currentIndicator = null;
+    wb.views.topics.list.selModel.deselectAll();
+    wb.views.topic.list.selModel.deselectAll();
+}

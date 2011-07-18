@@ -24,5 +24,3 @@ var wb = new Ext.Application({
 
 
 });
-
-
