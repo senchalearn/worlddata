@@ -3,7 +3,7 @@ wb.views.home.card = new Ext.Panel({
     id: 'homeCard',
     dockedItems: {
         xtype: 'toolbar',
-        title: 'The World Bank'
+        title: 'Economic Indicators'
     },
     layout: {
         type: 'vbox'
