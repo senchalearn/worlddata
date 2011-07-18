@@ -1,7 +1,7 @@
-wb.data = {}; //namespace for models & stores
+wb.models = {}; //namespace for models & stores
 
 //
-//wb.data.DataPoint = Ext.regModel("", {
+//wb.models.DataPoint = Ext.regModel("", {
 //    fields: [
 //        {name: "value", type: "int"},
 ////        {name: "decimal", type: "int"},
@@ -9,15 +9,17 @@ wb.data = {}; //namespace for models & stores
 //    ]
 //});
 
-wb.data.CountryIndicator = Ext.regModel("", {
+wb.models.CountryIndicator = Ext.regModel("", {
     fields: [
         {name: "countryId", type: "string"},
         {name: "countryName", type: "string"},
         {name: "indicatorId", type: "string"},
         {name: "indicatorName", type: "string"},
         {name: "name", type: "string", convert: function(value, record) {
+            return record.get('indicatorName');
             return record.get('countryName') + ' ' + record.get('indicatorName');
-        }}
+        }},
+        {name: "alias", type: "string"},
     ],
     _data: null,
     getData: function () {
@@ -29,7 +31,7 @@ wb.data.CountryIndicator = Ext.regModel("", {
                 ],
                 sorters: 'date',
                 autoLoad: true,
-                proxy: {    
+                proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
                         '/countries/' + this.get('countryId') +
@@ -38,7 +40,13 @@ wb.data.CountryIndicator = Ext.regModel("", {
                     callbackParam: 'prefix',
                     reader: {
                         type: 'json',
-                        root: '1'
+                        root: '1',
+                        read: function (response) {
+                            if (response[1]) {
+                                return Ext.data.JsonReader.superclass.read.call(this, response);
+                            }
+                            return this.nullResultSet;
+                        }
                     }
                 }
             });
@@ -48,7 +56,7 @@ wb.data.CountryIndicator = Ext.regModel("", {
 
 });
 
-wb.data.Indicator = Ext.regModel("", {
+wb.models.Indicator = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "name", type: "string"},
@@ -60,7 +68,7 @@ wb.data.Indicator = Ext.regModel("", {
     ]
 });
 
-wb.data.Topic = Ext.regModel("", {
+wb.models.Topic = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "value", type: "string"},
@@ -70,9 +78,9 @@ wb.data.Topic = Ext.regModel("", {
     getIndicators: function () {
         if (!this._indicators) {
             this._indicators = new Ext.data.Store({
-                model: wb.data.Indicator,
+                model: wb.models.Indicator,
                 autoLoad: true,
-                proxy: {    
+                proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
                         '/topics/' + this.get('id') +
@@ -90,7 +98,7 @@ wb.data.Topic = Ext.regModel("", {
     }
 });
 
-wb.data.Country = Ext.regModel("", {
+wb.models.Country = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "iso2Code", type: "string"},
@@ -106,14 +114,14 @@ wb.data.Country = Ext.regModel("", {
         }}
     ],
     _countryIndicators: new Ext.data.Store({
-        model: wb.data.CountryIndicator,
+        model: wb.models.CountryIndicator,
         autoLoad: false
     }),
     getCountryIndicator: function(indicator) {
         var index = this._countryIndicators.findExact('indicatorId', indicator.get('id'));
         var countryIndicator = index != -1 ? this._countryIndicators.getAt(index) : null;
         if (!countryIndicator) {
-            countryIndicator = new wb.data.CountryIndicator({
+            countryIndicator = new wb.models.CountryIndicator({
                 countryId: this.get('id'),
                 countryName: this.get('name'),
                 indicatorId: indicator.get('id'),
@@ -125,7 +133,7 @@ wb.data.Country = Ext.regModel("", {
     }
 });
 
-wb.data.Region = Ext.regModel("", {
+wb.models.Region = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "code", type: "string"},
@@ -135,8 +143,9 @@ wb.data.Region = Ext.regModel("", {
     getCountries: function () {
         if (!this._countries) {
             this._countries = new Ext.data.Store({
-                model: wb.data.Country,
+                model: wb.models.Country,
                 autoLoad: true,
+                pageSize: 300,
                 proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
@@ -144,6 +153,7 @@ wb.data.Region = Ext.regModel("", {
                         '/countries' +
                         '?format=jsonP',
                     callbackParam: 'prefix',
+                    limitParam: 'per_page',
                     reader: {
                         type: 'json',
                         root: '1'
@@ -156,17 +166,17 @@ wb.data.Region = Ext.regModel("", {
 });
 
 
-wb.data.recentCountries = new Ext.data.Store({
-    model: wb.data.Country,
-    autoLoad: true,
-    proxy: {
-        type: 'memory'
-    }
-});
+//wb.models.recentCountries = new Ext.data.Store({
+//    model: wb.models.Country,
+//    autoLoad: true,
+//    proxy: {
+//        type: 'memory'
+//    }
+//});
 
 
-wb.data.allRegions = new Ext.data.Store({
-    model: wb.data.Region,
+wb.models.allRegions = new Ext.data.Store({
+    model: wb.models.Region,
     autoLoad: true,
     proxy: {
         type: 'scripttag',
@@ -179,17 +189,17 @@ wb.data.allRegions = new Ext.data.Store({
     },
     listeners: {
         load: function () {
-            var recentCountriesRegion = new wb.data.Region({name:'Recently used countries'});
-            recentCountriesRegion.getCountries = function () {
-                return wb.data.recentCountries;
-            };
-            this.insert(0, recentCountriesRegion);
+            //var recentCountriesRegion = new wb.models.Region({name:'Recently used countries'});
+            //recentCountriesRegion.getCountries = function () {
+            //    return wb.models.recentCountries;
+            //};
+            //this.insert(0, recentCountriesRegion);
         }
     }
 });
 
-wb.data.allTopics = new Ext.data.Store({
-    model: wb.data.Topic,
+wb.models.allTopics = new Ext.data.Store({
+    model: wb.models.Topic,
     autoLoad: true,
     proxy: {
         type: 'scripttag',
@@ -200,4 +210,17 @@ wb.data.allTopics = new Ext.data.Store({
             root: '1'
         }
     }
+});
+
+wb.models.curatedCountryIndicators = new Ext.data.Store({
+    model: wb.models.CountryIndicator,
+    data: [
+        {alias:"US Energy Usage", countryId:"USA", indicatorId:"EG.USE.COMM.KT.OE"},
+        {alias:"Korean Tech Exports", countryId:"KOR", indicatorId:"TX.VAL.TECH.CD"},
+        {alias:"Chinese Rail Usage", countryId:"CHN", indicatorId:"IS.RRS.PASG.KM"},
+        {alias:"Greek Debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"},
+        {alias:"Urban Growth in India", countryId:"IND", indicatorId:"SP.URB.TOTL.IN.ZS"},
+        {alias:"Ukrainian Tractors", countryId:"UKR", indicatorId:"AG.AGR.TRAC.NO"},
+
+    ]
 });
