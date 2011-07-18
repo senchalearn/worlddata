@@ -297,7 +297,12 @@ wb.views.data.toolbar = new Ext.Toolbar({
 wb.views.data.chart = new Ext.chart.Chart({
     title: 'Chart',
     store: null,
-    interactions: [],
+    theme: 'Fancy',
+    interactions: [{
+        type: 'reset'
+    }, {
+        type: 'axisnavigation'
+    }],
     axes: [{
         type: 'Numeric',
         grid: true,
@@ -315,16 +320,16 @@ wb.views.data.chart = new Ext.chart.Chart({
     series: [{
         type: 'line',
         lineWidth: 1,
-        showMarkers: false,
+        showMarkers: true,
         fill: true,
         axis: 'left',
         xField: 'date',
-        yField: 'value',
-        style: {
-            'stroke-width': 3,
-            'fill': '#e5cfd1',
-            'stroke': '#991924'
-        }
+        yField: 'value'
+        //style: {
+        //    'stroke-width': 3,
+        //    'fill': '#e5cfd1',
+        //    'stroke': '#991924'
+        //}
     }]
 });
 
