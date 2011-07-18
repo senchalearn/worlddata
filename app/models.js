@@ -18,7 +18,8 @@ wb.models.CountryIndicator = Ext.regModel("", {
         {name: "name", type: "string", convert: function(value, record) {
             return record.get('indicatorName');
             return record.get('countryName') + ' ' + record.get('indicatorName');
-        }}
+        }},
+        {name: "alias", type: "string"},
     ],
     _data: null,
     getData: function () {
@@ -30,7 +31,7 @@ wb.models.CountryIndicator = Ext.regModel("", {
                 ],
                 sorters: 'date',
                 autoLoad: true,
-                proxy: {    
+                proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
                         '/countries/' + this.get('countryId') +
@@ -76,7 +77,7 @@ wb.models.Topic = Ext.regModel("", {
             this._indicators = new Ext.data.Store({
                 model: wb.models.Indicator,
                 autoLoad: true,
-                proxy: {    
+                proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
                         '/topics/' + this.get('id') +
@@ -204,4 +205,11 @@ wb.models.allTopics = new Ext.data.Store({
             root: '1'
         }
     }
+});
+
+wb.models.interestingCountryIndicators = new Ext.data.Store({
+    model: wb.models.CountryIndicator,
+    data: [
+        {alias:"Greek debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"}
+    ]
 });

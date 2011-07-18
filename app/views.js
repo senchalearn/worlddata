@@ -36,24 +36,28 @@ wb.views.home.card = new Ext.Panel({
             text: 'Interesting data',
             listeners: {
                 tap: function () {
-                    Ext.Msg.alert("Coming soon");
+                    wb.resetSelections();
+                    wb.views.cards.setActiveItem(
+                        wb.views.interesting.card
+                    );
                 }
             }
-        }, {
-            xtype: 'button',
-            text: 'Workbench',
-            listeners: {
-                tap: function () {
-                    Ext.Msg.alert("Coming soon");
-                }
-            }
+        //}, {
+        //    xtype: 'button',
+        //    text: 'Workbench',
+        //    listeners: {
+        //        tap: function () {
+        //            Ext.Msg.alert("Coming soon");
+        //        }
+        //    }
         },
         {
             xtype: 'button',
-            cls: 'world',
+            text: 'Attribution',
+            ui: 'small',
             listeners: {
                 tap: function () {
-                    Ext.Msg.alert("This data &copy; etc etc");
+                    Ext.Msg.alert("Attribution", "The datasets displayed in this application come from <a href='worldbank.org'>The World Bank</a>, via its JSONP API. Individual datasets are also attributed.");
                 }
             }
         },
@@ -230,6 +234,39 @@ wb.views.topic.card = new Ext.Panel({
 });
 
 //----------------------
+wb.views.interesting = {};
+wb.views.interesting.toolbar = new Ext.Toolbar({
+    title: 'Interesting datasets',
+    items: [{
+        ui:'back',
+        text: 'Home',
+        listeners: {tap: function () {
+            wb.views.cards.setActiveItem('homeCard', {type:'slide', direction:'right'});
+        }}
+    }]
+});
+wb.views.interesting.list = new Ext.List({
+    store: null,
+    itemTpl: '{alias}',
+    listeners: {
+        selectionchange: function (selectionModel, records) {
+            if (records[0]) {
+                wb.currentCountryIndicator = records[0];
+                wb.views.cards.setActiveItem(
+                    wb.views.data.card.update(wb.views.interesting.card, 'Back')
+                );
+            }
+        }
+    }
+});
+wb.views.interesting.card = new Ext.Panel({
+    id: 'interestingCard',
+    layout: 'fit',
+    dockedItems: [wb.views.interesting.toolbar],
+    items: [wb.views.interesting.list]
+});
+
+//----------------------
 
 wb.views.data = {};
 wb.views.data.backButton = new Ext.Button({
@@ -252,8 +289,8 @@ wb.views.data.toolbar = new Ext.Toolbar({
     title: 'Indicator',
     items: [
         wb.views.data.backButton,
-        {xtype:'spacer'},
-        wb.views.data.study
+        //{xtype:'spacer'},
+        //wb.views.data.study
     ]
 });
 
@@ -314,10 +351,11 @@ wb.views.data.card = new Ext.TabPanel({
     update: function(backTo, text) {
         wb.views.data.backButton.setText(text).backTo = backTo;
 
-        var countryIndicator = wb.currentCountry.getCountryIndicator(wb.currentIndicator);
-        wb.views.data.toolbar.setTitle(countryIndicator.get('name'));
-        wb.views.data.study.countryIndicator = countryIndicator;
-        var store = countryIndicator.getData();
+        if (!wb.currentCountryIndicator) {
+            wb.currentCountryIndicator = wb.currentCountry.getCountryIndicator(wb.currentIndicator);
+        }
+        wb.views.data.toolbar.setTitle(wb.currentCountryIndicator.get('alias') || wb.currentCountryIndicator.get('name'));
+        var store = wb.currentCountryIndicator.getData();
         wb.views.data.chart.bindStore(store);
         wb.views.data.table.bindStore(store);
 
@@ -332,6 +370,8 @@ wb.views.data.card = new Ext.TabPanel({
 wb.resetSelections = function() {
     wb.resetCountry();
     wb.resetIndicator();
+    wb.currentCountryIndicator = null;
+    wb.views.interesting.list.selModel.deselectAll();
 }
 wb.resetCountry = function() {
     wb.currentCountry = null;
