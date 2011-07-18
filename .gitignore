@@ -1,2 +1,4 @@
 /scss/.sass-cache/
 .DS_Store
+/lib/charts
+/lib/touch
