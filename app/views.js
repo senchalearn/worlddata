@@ -135,8 +135,8 @@ wb.views.region.card = new Ext.Panel({
                             );
                         } else {
                             wb.views.cards.setActiveItem(
-                                wb.views.data.card.update(wb.views.region.card, 'Region')
-                            );
+                                wb.views.data.card
+                            ).getActiveItem().update(wb.views.region.card, 'Region');
                         }
                     }
                 }
@@ -215,8 +215,8 @@ wb.views.topic.list = new Ext.List({
                     );
                 } else {
                     wb.views.cards.setActiveItem(
-                        wb.views.data.card.update(wb.views.topic.card, 'Topic')
-                    );
+                        wb.views.data.card
+                    ).getActiveItem().update(wb.views.topic.card, 'Topic');
                 }
             }
         }
@@ -253,8 +253,8 @@ wb.views.interesting.list = new Ext.List({
             if (records[0]) {
                 wb.currentCountryIndicator = records[0];
                 wb.views.cards.setActiveItem(
-                    wb.views.data.card.update(wb.views.interesting.card, 'Back')
-                );
+                    wb.views.data.card
+                ).getActiveItem().update(wb.views.interesting.card, 'Back');
             }
         }
     }
@@ -274,6 +274,7 @@ wb.views.data.backButton = new Ext.Button({
     text: 'Home',
     backTo: 'homeCard',
     listeners: {tap: function () {
+        wb.currentCountryIndicator = null;
         wb.views.cards.setActiveItem(this.backTo, {type:'slide', direction:'right'});
     }}
 });
@@ -301,7 +302,7 @@ wb.views.data.chart = new Ext.chart.Chart({
     interactions: [{
         type: 'reset'
     }, {
-        type: 'axisnavigation'
+        type: 'panzoom'
     }],
     axes: [{
         type: 'Numeric',

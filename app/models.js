@@ -41,8 +41,11 @@ wb.models.CountryIndicator = Ext.regModel("", {
                     reader: {
                         type: 'json',
                         root: '1',
-                        read: function () {
-                            return Ext.data.JsonReader.superclass.read.apply(this, arguments);
+                        read: function (response) {
+                            if (response[1]) {
+                                return Ext.data.JsonReader.superclass.read.call(this, response);
+                            }
+                            return this.nullResultSet;
                         }
                     }
                 }
@@ -142,6 +145,7 @@ wb.models.Region = Ext.regModel("", {
             this._countries = new Ext.data.Store({
                 model: wb.models.Country,
                 autoLoad: true,
+                pageSize: 300,
                 proxy: {
                     type: 'scripttag',
                     url: 'http://api.worldbank.org' +
@@ -149,6 +153,7 @@ wb.models.Region = Ext.regModel("", {
                         '/countries' +
                         '?format=jsonP',
                     callbackParam: 'prefix',
+                    limitParam: 'per_page',
                     reader: {
                         type: 'json',
                         root: '1'
@@ -210,6 +215,7 @@ wb.models.allTopics = new Ext.data.Store({
 wb.models.interestingCountryIndicators = new Ext.data.Store({
     model: wb.models.CountryIndicator,
     data: [
-        {alias:"Greek debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"}
+        {alias:"Greek Debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"},
+        {alias:"Ukrainian Tractors", countryId:"UKR", indicatorId:"AG.AGR.TRAC.NO"},
     ]
 });
