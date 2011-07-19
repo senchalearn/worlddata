@@ -298,7 +298,7 @@ wb.views.data.toolbar = new Ext.Toolbar({
 wb.views.data.chart = new Ext.chart.Chart({
     title: 'Chart',
     store: null,
-    theme: 'Fancy',
+    theme: 'WorldData',
     interactions: [{
         type: 'reset'
     }, {
@@ -326,33 +326,15 @@ wb.views.data.chart = new Ext.chart.Chart({
         axis: 'left',
         xField: 'date',
         yField: 'value'
-        //style: {
-        //    'stroke-width': 3,
-        //    'fill': '#e5cfd1',
-        //    'stroke': '#991924'
-        //}
     }]
 });
 
-wb.views.data.table = new Ext.List({
-    title: 'Data',
-    layout: 'fit',
-    store: null,
-    cls: 'grid',
-    itemTpl: '<span class="date">{[values.date.getFullYear()]}</span><span class="value">{value}</span>'
-});
-
-wb.views.data.card = new Ext.TabPanel({
+wb.views.data.card = new Ext.Panel({
     id: 'dataCard',
     layout: 'fit',
-    tabBar: {
-        ui: 'light',
-        layout: {pack: 'center'}
-    },
     dockedItems: [wb.views.data.toolbar],
     items: [
-        wb.views.data.chart,
-        wb.views.data.table
+        wb.views.data.chart
     ],
     update: function(backTo, text) {
         wb.views.data.backButton.setText(text).backTo = backTo;
@@ -363,7 +345,6 @@ wb.views.data.card = new Ext.TabPanel({
         wb.views.data.toolbar.setTitle(wb.currentCountryIndicator.get('alias') || wb.currentCountryIndicator.get('name'));
         var store = wb.currentCountryIndicator.getData();
         wb.views.data.chart.bindStore(store);
-        wb.views.data.table.bindStore(store);
 
         //wb.models.recentCountries.add(country);
         //wb.models.recentCountries.sync();
