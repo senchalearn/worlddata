@@ -23,6 +23,7 @@ wd.views.home.card = new Ext.Panel({
         items: [{xtype:'spacer'}, {
             iconCls:'info',
             iconMask: true,
+            ui: 'plain',
             listeners: {
                 tap: function () {
                     Ext.Msg.alert("Attribution", "The datasets displayed in this application come from <a href='worldbank.org'>The World Bank</a>, via its JSONP API.");
@@ -296,17 +297,12 @@ wd.views.data.chart = new Ext.chart.Chart({
     }]
 });
 
-wd.views.data.card = new Ext.TabPanel({
+wd.views.data.card = new Ext.Panel({
     id: 'dataCard',
     layout: 'fit',
-    tabBar: {
-        ui: 'light',
-        layout: {pack: 'center'}
-    },
     dockedItems: [wd.views.data.toolbar],
     items: [
-        wd.views.data.chart,
-        wd.views.data.table
+        wd.views.data.chart
     ],
     update: function(backTo, text) {
         wd.views.data.backButton.setText(text).backTo = backTo;
