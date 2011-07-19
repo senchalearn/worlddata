@@ -1,5 +1,10 @@
 var wd = new Ext.Application({
     name: 'wd',
+    tabletStartupScreen: 'img/startup-tablet.jpg',
+    phoneStartupScreen: 'img/startup-phone.jpg',
+    tabletIcon: 'img/icon-ipad.png',
+    phoneIcon: 'img/icon-iphone.png',
+    glossOnIcon: false,
     launch: function() {
 
         wd.views.cards = new Ext.Panel({
@@ -23,6 +28,4 @@ var wd = new Ext.Application({
         wd.views.home.list.bindStore(wd.models.curatedCountryIndicators);
 
     }
-
-
 });
