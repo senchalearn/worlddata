@@ -1,26 +1,26 @@
-var wb = new Ext.Application({
-    name: 'wb',
+var wd = new Ext.Application({
+    name: 'wd',
     launch: function() {
 
-        wb.views.cards = new Ext.Panel({
+        wd.views.cards = new Ext.Panel({
             layout    : 'card',
             fullscreen: true,
             cardSwitchAnimation: 'slide',
             items: [
-                wb.views.home.card,
-                wb.views.regions.card,
-                wb.views.region.card,
-                wb.views.topics.card,
-                wb.views.topic.card,
-                wb.views.data.card,
+                wd.views.home.card,
+                wd.views.regions.card,
+                wd.views.region.card,
+                wd.views.topics.card,
+                wd.views.topic.card,
+                wd.views.data.card,
             ]
 
         });
 
-        wb.views.regions.list.bindStore(wb.models.allRegions);
-        wb.views.topics.list.bindStore(wb.models.allTopics);
+        wd.views.regions.list.bindStore(wd.models.allRegions);
+        wd.views.topics.list.bindStore(wd.models.allTopics);
 
-        wb.views.curated.list.bindStore(wb.models.curatedCountryIndicators);
+        wd.views.home.list.bindStore(wd.models.curatedCountryIndicators);
 
     }
 

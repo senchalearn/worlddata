@@ -20,6 +20,10 @@ $include-default-icons: false;
 
 @import 'touch-charts/default/all';
 
+
+
+@include pictos-iconmask('info');
+
 .grid {
   .date {
     font-weight:bold; width:50%; display:inline-block
@@ -35,4 +39,9 @@ $include-default-icons: false;
 
 a {
   color:#fff!important;
+}
+
+div {
+  font-family: 'Maven Pro', cursive;
+  font-weight:normal!important;
 }
