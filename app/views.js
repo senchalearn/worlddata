@@ -23,6 +23,7 @@ wd.views.home.card = new Ext.Panel({
         items: [{xtype:'spacer'}, {
             iconCls:'info',
             iconMask: true,
+            ui: 'plain',
             listeners: {
                 tap: function () {
                     Ext.Msg.alert("Attribution", "The datasets displayed in this application come from <a href='worldbank.org'>The World Bank</a>, via its JSONP API.");
@@ -265,7 +266,7 @@ wd.views.data.toolbar = new Ext.Toolbar({
 wd.views.data.chart = new Ext.chart.Chart({
     title: 'Chart',
     store: null,
-    theme: 'Fancy',
+    theme: 'WorldData',
     interactions: [{
         type: 'reset'
     }, {
@@ -293,33 +294,15 @@ wd.views.data.chart = new Ext.chart.Chart({
         axis: 'left',
         xField: 'date',
         yField: 'value'
-        //style: {
-        //    'stroke-width': 3,
-        //    'fill': '#e5cfd1',
-        //    'stroke': '#991924'
-        //}
     }]
 });
 
-wd.views.data.table = new Ext.List({
-    title: 'Data',
-    layout: 'fit',
-    store: null,
-    cls: 'grid',
-    itemTpl: '<span class="date">{[values.date.getFullYear()]}</span><span class="value">{value}</span>'
-});
-
-wd.views.data.card = new Ext.TabPanel({
+wd.views.data.card = new Ext.Panel({
     id: 'dataCard',
     layout: 'fit',
-    tabBar: {
-        ui: 'light',
-        layout: {pack: 'center'}
-    },
     dockedItems: [wd.views.data.toolbar],
     items: [
-        wd.views.data.chart,
-        wd.views.data.table
+        wd.views.data.chart
     ],
     update: function(backTo, text) {
         wd.views.data.backButton.setText(text).backTo = backTo;
@@ -330,7 +313,7 @@ wd.views.data.card = new Ext.TabPanel({
         wd.views.data.toolbar.setTitle(wd.currentCountryIndicator.get('alias') || wd.currentCountryIndicator.get('name'));
         var store = wd.currentCountryIndicator.getData();
         wd.views.data.chart.bindStore(store);
-        wd.views.data.table.bindStore(store);
+        // wd.views.data.table.bindStore(store);
 
         //wd.models.recentCountries.add(country);
         //wd.models.recentCountries.sync();
