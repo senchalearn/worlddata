@@ -1,7 +1,7 @@
-wb.models = {}; //namespace for models & stores
+wd.models = {}; //namespace for models & stores
 
 //
-//wb.models.DataPoint = Ext.regModel("", {
+//wd.models.DataPoint = Ext.regModel("", {
 //    fields: [
 //        {name: "value", type: "int"},
 ////        {name: "decimal", type: "int"},
@@ -9,7 +9,7 @@ wb.models = {}; //namespace for models & stores
 //    ]
 //});
 
-wb.models.CountryIndicator = Ext.regModel("", {
+wd.models.CountryIndicator = Ext.regModel("", {
     fields: [
         {name: "countryId", type: "string"},
         {name: "countryName", type: "string"},
@@ -56,7 +56,7 @@ wb.models.CountryIndicator = Ext.regModel("", {
 
 });
 
-wb.models.Indicator = Ext.regModel("", {
+wd.models.Indicator = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "name", type: "string"},
@@ -68,7 +68,7 @@ wb.models.Indicator = Ext.regModel("", {
     ]
 });
 
-wb.models.Topic = Ext.regModel("", {
+wd.models.Topic = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "value", type: "string"},
@@ -78,7 +78,7 @@ wb.models.Topic = Ext.regModel("", {
     getIndicators: function () {
         if (!this._indicators) {
             this._indicators = new Ext.data.Store({
-                model: wb.models.Indicator,
+                model: wd.models.Indicator,
                 autoLoad: true,
                 proxy: {
                     type: 'scripttag',
@@ -98,7 +98,7 @@ wb.models.Topic = Ext.regModel("", {
     }
 });
 
-wb.models.Country = Ext.regModel("", {
+wd.models.Country = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "iso2Code", type: "string"},
@@ -114,14 +114,14 @@ wb.models.Country = Ext.regModel("", {
         }}
     ],
     _countryIndicators: new Ext.data.Store({
-        model: wb.models.CountryIndicator,
+        model: wd.models.CountryIndicator,
         autoLoad: false
     }),
     getCountryIndicator: function(indicator) {
         var index = this._countryIndicators.findExact('indicatorId', indicator.get('id'));
         var countryIndicator = index != -1 ? this._countryIndicators.getAt(index) : null;
         if (!countryIndicator) {
-            countryIndicator = new wb.models.CountryIndicator({
+            countryIndicator = new wd.models.CountryIndicator({
                 countryId: this.get('id'),
                 countryName: this.get('name'),
                 indicatorId: indicator.get('id'),
@@ -133,7 +133,7 @@ wb.models.Country = Ext.regModel("", {
     }
 });
 
-wb.models.Region = Ext.regModel("", {
+wd.models.Region = Ext.regModel("", {
     fields: [
         {name: "id", type: "string"},
         {name: "code", type: "string"},
@@ -143,7 +143,7 @@ wb.models.Region = Ext.regModel("", {
     getCountries: function () {
         if (!this._countries) {
             this._countries = new Ext.data.Store({
-                model: wb.models.Country,
+                model: wd.models.Country,
                 autoLoad: true,
                 pageSize: 300,
                 proxy: {
@@ -166,8 +166,8 @@ wb.models.Region = Ext.regModel("", {
 });
 
 
-//wb.models.recentCountries = new Ext.data.Store({
-//    model: wb.models.Country,
+//wd.models.recentCountries = new Ext.data.Store({
+//    model: wd.models.Country,
 //    autoLoad: true,
 //    proxy: {
 //        type: 'memory'
@@ -175,8 +175,8 @@ wb.models.Region = Ext.regModel("", {
 //});
 
 
-wb.models.allRegions = new Ext.data.Store({
-    model: wb.models.Region,
+wd.models.allRegions = new Ext.data.Store({
+    model: wd.models.Region,
     autoLoad: true,
     proxy: {
         type: 'scripttag',
@@ -189,17 +189,17 @@ wb.models.allRegions = new Ext.data.Store({
     },
     listeners: {
         load: function () {
-            //var recentCountriesRegion = new wb.models.Region({name:'Recently used countries'});
+            //var recentCountriesRegion = new wd.models.Region({name:'Recently used countries'});
             //recentCountriesRegion.getCountries = function () {
-            //    return wb.models.recentCountries;
+            //    return wd.models.recentCountries;
             //};
             //this.insert(0, recentCountriesRegion);
         }
     }
 });
 
-wb.models.allTopics = new Ext.data.Store({
-    model: wb.models.Topic,
+wd.models.allTopics = new Ext.data.Store({
+    model: wd.models.Topic,
     autoLoad: true,
     proxy: {
         type: 'scripttag',
@@ -212,8 +212,8 @@ wb.models.allTopics = new Ext.data.Store({
     }
 });
 
-wb.models.curatedCountryIndicators = new Ext.data.Store({
-    model: wb.models.CountryIndicator,
+wd.models.curatedCountryIndicators = new Ext.data.Store({
+    model: wd.models.CountryIndicator,
     data: [
         {alias:"US Energy Usage", countryId:"USA", indicatorId:"EG.USE.COMM.KT.OE"},
         {alias:"Korean Tech Exports", countryId:"KOR", indicatorId:"TX.VAL.TECH.CD"},
