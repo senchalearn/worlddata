@@ -42,6 +42,9 @@ wd.views.dataChart = new Ext.chart.Chart({
     }, {
         type: 'panzoom'
     }],
+    legend: {
+        position: 'top'
+    },
     axes: [{
         type: 'Numeric',
         grid: true,
