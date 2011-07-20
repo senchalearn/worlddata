@@ -271,10 +271,19 @@ wd.views.data.chart = new Ext.chart.Chart({
         type: 'reset'
     }, {
         type: 'panzoom'
+    }, {
+        type: 'iteminfo',
+        gesture: 'taphold',
+        listeners: {
+            show: function(interaction, item, panel) {
+                var record = item.storeItem;
+                panel.getDockedItems()[0].setTitle( wd.views.data.toolbar.title)
+                panel.update(
+                    '<b>' + record.get('date').getFullYear() + ':</b>' + record.get('value')
+                );
+            }
+        }
     }],
-    legend: {
-        position: 'top'
-    },
     axes: [{
         type: 'Numeric',
         grid: true,
