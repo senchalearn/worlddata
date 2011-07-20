@@ -313,6 +313,7 @@ wd.views.data.card = new Ext.Panel({
         wd.views.data.toolbar.setTitle(wd.currentCountryIndicator.get('alias') || wd.currentCountryIndicator.get('name'));
         var store = wd.currentCountryIndicator.getData();
         wd.views.data.chart.bindStore(store);
+        wd.views.data.chart.axes.items[0].title = wd.currentCountryIndicator.get('unit') || "Value"
         // wd.views.data.table.bindStore(store);
 
         //wd.models.recentCountries.add(country);

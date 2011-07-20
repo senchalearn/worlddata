@@ -215,12 +215,11 @@ wd.models.allTopics = new Ext.data.Store({
 wd.models.curatedCountryIndicators = new Ext.data.Store({
     model: wd.models.CountryIndicator,
     data: [
-        {alias:"US Energy Usage", countryId:"USA", indicatorId:"EG.USE.COMM.KT.OE"},
-        {alias:"Korean Tech Exports", countryId:"KOR", indicatorId:"TX.VAL.TECH.CD"},
-        {alias:"Chinese Rail Usage", countryId:"CHN", indicatorId:"IS.RRS.PASG.KM"},
-        {alias:"Greek Debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS"},
-        {alias:"Urban Growth in India", countryId:"IND", indicatorId:"SP.URB.TOTL.IN.ZS"},
-        {alias:"Ukrainian Tractors", countryId:"UKR", indicatorId:"AG.AGR.TRAC.NO"},
-
+        {alias:"US Energy Usage", countryId:"USA", indicatorId:"EG.USE.COMM.KT.OE", unit:"Kt of oil equivalent"},
+        {alias:"Korean Tech Exports", countryId:"KOR", indicatorId:"TX.VAL.TECH.CD", unit:"Current US$"},
+        {alias:"Chinese Rail Usage", countryId:"CHN", indicatorId:"IS.RRS.PASG.KM", unit:"Million passenger km"},
+        {alias:"Greek Debt", countryId:"GRC", indicatorId:"BN.CAB.XOKA.GD.ZS", unit:"Balance (% of GDP)"},
+        {alias:"Urban Growth in India", countryId:"IND", indicatorId:"SP.URB.TOTL.IN.ZS", unit:"Urban population (% of total)"},
+        {alias:"Ukrainian Tractors", countryId:"UKR", indicatorId:"AG.AGR.TRAC.NO", unit:"Number of tractors"},
     ]
 });
