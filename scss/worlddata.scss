@@ -20,7 +20,13 @@ $include-default-icons: false;
 
 @import 'touch-charts/default/all';
 
-
+// You may remove any of the following modules that you
+// do not use in order to create a smaller css file.
+@include touch-charts-draw;
+@include touch-charts-chart;
+@include touch-charts-toolbar;
+@include touch-charts-panzoom;
+@include touch-charts-legend;
 
 @include pictos-iconmask('info');
 
