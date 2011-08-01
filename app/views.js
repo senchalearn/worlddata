@@ -264,13 +264,21 @@ wd.views.data.toolbar = new Ext.Toolbar({
 });
 
 wd.views.data.chart = new Ext.chart.Chart({
-    title: 'Chart',
     store: null,
     theme: 'WorldData',
     interactions: [{
         type: 'reset'
     }, {
         type: 'panzoom'
+    }, {
+        type: 'iteminfo',
+        listeners: {
+            show: function(interaction, item, panel) {
+                var record = item.storeItem;
+                panel.getDockedItems()[0].setTitle(record.get('date').getFullYear());
+                panel.update(record.data);
+            }
+        }
     }],
     axes: [{
         type: 'Numeric',
@@ -310,14 +318,16 @@ wd.views.data.card = new Ext.Panel({
         if (!wd.currentCountryIndicator) {
             wd.currentCountryIndicator = wd.currentCountry.getCountryIndicator(wd.currentIndicator);
         }
-        wd.views.data.toolbar.setTitle(wd.currentCountryIndicator.get('alias') || wd.currentCountryIndicator.get('name'));
-        var store = wd.currentCountryIndicator.getData();
-        wd.views.data.chart.bindStore(store);
-        wd.views.data.chart.axes.items[0].title = wd.currentCountryIndicator.get('unit') || "Value"
-        // wd.views.data.table.bindStore(store);
 
-        //wd.models.recentCountries.add(country);
-        //wd.models.recentCountries.sync();
+        var title = wd.currentCountryIndicator.get('alias') || wd.currentCountryIndicator.get('name');
+        var unit = wd.currentCountryIndicator.get('unit') || "Value"
+
+        wd.views.data.toolbar.setTitle(title);
+        var chart = wd.views.data.chart;
+            chart.bindStore(wd.currentCountryIndicator.getData());
+            chart.axes.items[0].title = unit;
+            chart.interactions.get('iteminfo').getPanel().tpl =
+                '<b>' + title + ':</b><br />{value} ' + unit;
 
         return this;
     }
