@@ -1,3 +1,13 @@
+Ext.util.Format.si = function(number) {
+    var number = parseFloat(number),
+        suffix = ['', 'k', 'm', 'b', 't'],
+        len = Math.round(Math.abs(number)).toString().length - 1;
+    if (len < 15) {
+        return (Math.round(number / Math.pow(10, len-2)) / Math.pow(10, 2-(len%3))) + suffix[Math.floor(len/3)];
+    }
+    return number.toString();
+}
+
 wd.views.home = {};
 
 wd.views.home.list = new Ext.List({
@@ -272,6 +282,7 @@ wd.views.data.chart = new Ext.chart.Chart({
         type: 'panzoom'
     }, {
         type: 'iteminfo',
+        gesture: 'taphold',
         listeners: {
             show: function(interaction, item, panel) {
                 var record = item.storeItem;
@@ -279,13 +290,63 @@ wd.views.data.chart = new Ext.chart.Chart({
                 panel.update(record.data);
             }
         }
+    }, {
+        type: 'itemcompare',
+        listeners: {
+            show: function(interaction) {
+                var record1 = interaction.item1.storeItem,
+                    record2 = interaction.item2.storeItem,
+                    panel = interaction.infoPanel,
+                    y1 = record1.get('date').getFullYear(),
+                    y2 = record2.get('date').getFullYear();
+
+                panel.getDockedItems()[0].setTitle(
+                    y1 < y2 ?
+                    y1 + ' to ' + y2 :
+                    y2 + ' to ' + y1
+                );
+                panel.show('pop');
+                var data = (
+                    y1 < y2 ?
+                    {i1:record1.data, i2:record2.data} :
+                    {i1:record2.data, i2:record1.data}
+                );
+                data.d = {
+                    value: Math.abs(Math.round(100 * (data.i2.value - data.i1.value) / data.i1.value)),
+                    direction: data.i2.value > data.i1.value ? 'rose' : 'fell'
+                };
+                panel.update(data);
+            }
+        },
+        infoPanel: new Ext.Panel({
+            floating: true,
+            modal: true,
+            centered: true,
+            width: 250,
+            styleHtmlContent: true,
+            scroll: 'vertical',
+            dockedItems: [{
+                dock: 'top',
+                xtype: 'toolbar',
+                title: 'Item Detail'
+            }],
+            stopMaskTapEvent: false,
+            listeners: {
+                hide: function() {
+                    wd.views.data.chart.interactions.get('itemcompare').reset();
+                }
+            }
+        })
     }],
     axes: [{
         type: 'Numeric',
         grid: true,
         position: 'left',
         fields: ['value'],
-        title: 'Value'
+        title: 'Value',
+        label: {
+            renderer: Ext.util.Format.si
+        }
     }, {
         type: 'Time',
         dateFormat: 'Y',
@@ -320,15 +381,25 @@ wd.views.data.card = new Ext.Panel({
         }
 
         var title = wd.currentCountryIndicator.get('alias') || wd.currentCountryIndicator.get('name');
-        var unit = wd.currentCountryIndicator.get('unit') || "Value"
+        var unit = wd.currentCountryIndicator.get('unit') || ""
 
         wd.views.data.toolbar.setTitle(title);
         var chart = wd.views.data.chart;
-            chart.bindStore(wd.currentCountryIndicator.getData());
-            chart.axes.items[0].title = unit;
-            chart.interactions.get('iteminfo').getPanel().tpl =
-                '<b>' + title + ':</b><br />{value} ' + unit;
 
+        chart.bindStore(wd.currentCountryIndicator.getData());
+        chart.axes.items[0].title = unit;
+        chart.interactions.get('iteminfo').getPanel().tpl = new Ext.XTemplate(
+            '<b>' + title + ':</b>',
+            '<br />{value:si} ' + unit
+        );
+
+        var itemcompare = chart.interactions.get('itemcompare');
+        itemcompare.reset();
+        itemcompare.infoPanel.tpl = new Ext.XTemplate(
+            '<b>' + title + ' {d.direction} {d.value}%</b> ',
+            'from {i1.value:si} to {i2.value:si} ',
+            unit
+        );
         return this;
     }
 
@@ -350,3 +421,4 @@ wd.resetIndicator = function() {
     wd.views.topics.list.selModel.deselectAll();
     wd.views.topic.list.selModel.deselectAll();
 }
+
