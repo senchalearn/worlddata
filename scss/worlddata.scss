@@ -20,8 +20,6 @@ $include-default-icons: false;
 
 @import 'touch-charts/default/all';
 
-// You may remove any of the following modules that you
-// do not use in order to create a smaller css file.
 @include touch-charts-draw;
 @include touch-charts-chart;
 @include touch-charts-toolbar;
@@ -30,24 +28,7 @@ $include-default-icons: false;
 
 @include pictos-iconmask('info');
 
-.grid {
-  .date {
-    font-weight:bold; width:50%; display:inline-block
-  }
-  .value {
-    font-family:monospace
-  }
-}
-
-.x-button {
-  margin:10px;
-}
-
-a {
-  color:#fff!important;
-}
-
 div {
-  font-family: 'Maven Pro', cursive;
+  font-family: 'Maven Pro', sans-serif;
   font-weight:normal!important;
 }
