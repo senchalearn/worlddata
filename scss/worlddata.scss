@@ -20,11 +20,15 @@ $include-default-icons: false;
 
 @import 'touch-charts/default/all';
 
-
+@include touch-charts-draw;
+@include touch-charts-chart;
+@include touch-charts-toolbar;
+@include touch-charts-panzoom;
+@include touch-charts-legend;
 
 @include pictos-iconmask('info');
 
 div {
-  font-family: 'Maven Pro', arial, sans-serif;
+  font-family: 'Maven Pro', sans-serif;
   font-weight:normal!important;
 }
